@@ -1,4 +1,6 @@
 import HeroSlider from "../components/HeroSlider";
+import EditorsPick from "../components/EditorsPick";
+import BestsellerProducts from "../components/BestsellerProducts";
 
 function HomePage() {
   return (
@@ -8,6 +10,13 @@ function HomePage() {
       <section className="w-full">
         <HeroSlider />
       </section>
+      <div className="mt-60">
+        <EditorsPick />
+      </div>
+      <div className="mt-10">
+        <BestsellerProducts />
+      </div>
+
 
     </div>
   );

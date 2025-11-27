@@ -1,12 +1,24 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import HeroSlider1 from "../assets/HeroSlider1.jpg";
+import { Navigation, Pagination } from "swiper/modules";
 
 
 function HeroSlider() {
   return (
     <div className="w-full h-[300px] md:h-[500px] bg-blue-200">
-      <Swiper>
+      <Swiper
+      modules={[Navigation, Pagination]}
+      navigation
+      pagination={{ clickable: true }}
+      loop={true}
+      style={{
+    "--swiper-navigation-color": "#FFF",
+    "--swiper-pagination-color": "#FFF",
+  }}
+      >
             <SwiperSlide>
   <div className="relative w-full h-[300px] md:h-[600px] lg:h-[750px]">
     {/* BACKGROUND IMAGE */}
