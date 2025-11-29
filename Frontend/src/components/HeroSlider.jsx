@@ -5,40 +5,72 @@ import "swiper/css/pagination";
 import HeroSlider1 from "../assets/HeroSlider1.jpg";
 import { Navigation, Pagination } from "swiper/modules";
 
-
 function HeroSlider() {
   return (
-    <div className="w-full h-[300px] md:h-[500px] bg-blue-200">
+    <div className="w-full h-[753px]">
       <Swiper
-      modules={[Navigation, Pagination]}
-      navigation
-      pagination={{ clickable: true }}
-      loop={true}
-      style={{
-    "--swiper-navigation-color": "#FFF",
-    "--swiper-pagination-color": "#FFF",
-  }}
+        modules={[Navigation, Pagination]}
+        navigation
+        pagination={{ clickable: true }}
+        loop={true}
+        style={{
+          "--swiper-navigation-color": "#FFF",
+          "--swiper-pagination-color": "#FFF",
+        }}
       >
-            <SwiperSlide>
-  <div className="relative w-full h-[300px] md:h-[600px] lg:h-[750px]">
-    {/* BACKGROUND IMAGE */}
+        {/* SLIDE 1 */}
+        <SwiperSlide>
+  <div className="relative w-full h-[753px] overflow-hidden">
+
+    {/* BACKGROUND IMAGE — Mobile crop 414px */}
     <img
-      src={HeroSlider1}
-      alt="Hero Slide"
-      className="w-full h-full object-cover"
-    />
+  src={HeroSlider1}
+  alt="Hero Slide"
+  className="
+    w-full min-w-[414px] h-full object-cover 
+    scale-[1.3]           /* 🔥 Mobilde daha fazla kırpma */
+    md:scale-100          /* Masaüstü normal */
+    md:w-full md:min-w-0 md:h-full md:object-cover
+  "
+/>
+
+
 
     {/* TEXT CONTENT */}
-    <div className="absolute inset-0 flex flex-col items-start justify-center px-6 md:px-20 gap-4">
-      <p className="text-sm md:text-lg text-gray-200 tracking-wide">
-        SUMMER 2025 
+    <div
+      className="
+        absolute inset-0
+        flex flex-col 
+        items-center md:items-start
+        justify-center
+        text-center md:text-left
+        px-6 md:px-20
+        gap-4
+      "
+    >
+      <p className="text-white text-sm md:text-lg tracking-wide">
+        SUMMER 2020
       </p>
 
-      <h1 className="text-2xl md:text-5xl font-bold text-white max-w-lg leading-tight">
+      <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">
         NEW COLLECTION
       </h1>
 
-      <button className="bg-green-600 text-white px-6 py-3 rounded-md text-sm md:text-base hover:bg-blue-700 transition">
+      <p className="text-white text-sm md:text-base max-w-xs md:max-w-md">
+        We know how large objects will act, but things on a small scale.
+      </p>
+
+      <button
+        className="
+          bg-green-600 text-white 
+          px-10 md:px-6 
+          py-3 
+          rounded-md 
+          text-md md:text-base 
+          font-semibold
+          mt-4
+        "
+      >
         SHOP NOW
       </button>
     </div>
@@ -46,11 +78,18 @@ function HeroSlider() {
 </SwiperSlide>
 
 
-        <SwiperSlide className="flex items-center justify-center text-white text-2xl font-bold bg-green-500">
-          Slide 2
+        {/* SLIDE 2 */}
+        <SwiperSlide>
+          <div className="w-full h-[753px] flex items-center justify-center bg-green-500 text-white text-2xl">
+            Slide 2
+          </div>
         </SwiperSlide>
-        <SwiperSlide className="flex items-center justify-center text-white text-2xl font-bold bg-purple-500">
-          Slide 3
+
+        {/* SLIDE 3 */}
+        <SwiperSlide>
+          <div className="w-full h-[753px] flex items-center justify-center bg-purple-500 text-white text-2xl">
+            Slide 3
+          </div>
         </SwiperSlide>
       </Swiper>
     </div>
