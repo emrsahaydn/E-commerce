@@ -35,10 +35,15 @@ function BestsellerProducts() {
       <div className="flex flex-wrap justify-center gap-10">
 
         {products.map((p, i) => (
-          <div key={i} className="flex flex-col items-start w-[239px]">
+          <div
+  key={i}
+  className="
+    flex flex-col items-start 
+    w-[348px] md:w-[239px] 
+  ">
 
             {/* IMAGE */}
-            <div className="w-[239px] h-[427px] bg-gray-100">
+            <div className="w-[348px] h-[427px] md:w-[239px] md:h-[427px] bg-gray-100 mx-auto">
               <img
                 src={p.img}
                 alt={p.title}

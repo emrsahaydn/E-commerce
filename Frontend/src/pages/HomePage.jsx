@@ -15,7 +15,7 @@ function HomePage() {
       <section className="w-full">
         <HeroSlider />
       </section>
-      <div className="mt-60">
+      <div className="mt-10 md:mt-50">
         <EditorsPick />
       </div>
       <div className="mt-10">
