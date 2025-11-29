@@ -5,7 +5,16 @@ function Footer() {
     <footer className="w-full bg-[#FAFAFA] text-gray-700 pt-10">
 
       {/* ÜST KISIM: Logo + Sosyal Medya */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 pb-6">
+      <div className="
+  w-full 
+  flex flex-col md:flex-row 
+  items-start md:items-center 
+  justify-start md:justify-between 
+  px-6 md:px-20 
+  pb-6 
+  gap-4
+">
+
         <h2 className="text-2xl font-bold text-gray-900">Bandage</h2>
 
         <div className="flex gap-4 mt-4 md:mt-0">
@@ -77,9 +86,27 @@ function Footer() {
       </div>
 
       {/* ALT YAZI */}
-      <div className="w-full bg-white py-4 text-left md:text-left px-6 md:px-20 text-sm text-gray-500">
-        Made With Love By Finland All Right Reserved
-      </div>
+      <div
+  className="
+    w-full 
+    bg-[#FAFAFA] 
+    py-4 
+    text-center md:text-left 
+    px-6 md:px-20 
+    text-sm
+  "
+  style={{ color: "#737373" }}
+>
+  Made With Love 
+
+  <span className="hidden md:inline"> By </span>
+
+
+  <span className="md:hidden"> By <br /> </span>
+
+  Finland All Right Reserved
+</div>
+
 
     </footer>
   );

@@ -28,8 +28,8 @@ function HeroSlider() {
   alt="Hero Slide"
   className="
     w-full min-w-[414px] h-full object-cover 
-    scale-[1.3]           /* 🔥 Mobilde daha fazla kırpma */
-    md:scale-100          /* Masaüstü normal */
+    scale-[1.3]           
+    md:scale-100          
     md:w-full md:min-w-0 md:h-full md:object-cover
   "
 />

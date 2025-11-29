@@ -18,7 +18,6 @@ function Header() {
   return (
     <header className="w-full flex flex-col">
 
-      {/* TOP BAR — sadece masaüstünde */}
       <div className="hidden md:flex w-full bg-gray-900 text-white text-sm justify-between items-center px-4 py-2">
         <div className="flex items-center gap-4">
           <span>(225) 555-0118</span>

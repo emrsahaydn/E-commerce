@@ -27,7 +27,7 @@ function HomePage() {
       <div className="mt-20">
         <NeuralUniverseSection />
       </div>
-      <div className="mt-20">
+      <div className="mt-10">
         <FeaturedPostsSection />
       </div>
       <div className="mt-20">
