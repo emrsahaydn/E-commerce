@@ -108,12 +108,6 @@ function SecondHeroSlider() {
 
 </div>
 
-
-
-
-
-
-
 </SwiperSlide>
 
   <SwiperSlide>

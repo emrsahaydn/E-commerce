@@ -70,7 +70,7 @@ function Header() {
       {isMenuOpen && (
         <div className="md:hidden w-full bg-white flex flex-col items-center gap-6 py-10 text-lg text-gray-700 shadow-lg border-t">
           <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/product" onClick={() => setIsMenuOpen(false)}>Product</Link>
+          <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Product</Link>
           <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
         </div>
