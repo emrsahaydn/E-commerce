@@ -28,7 +28,7 @@ function SecondHeroSlider() {
     <div className="flex-1 flex flex-col items-start gap-4 text-white max-w-xl">
       <p className="text-sm tracking-wide">SUMMER 2020</p>
       <h2 className="text-5xl font-bold leading-tight">
-        Vita Classic <br /> Product 2
+        Vita Classic <br /> Product 
       </h2>
       <p className="text-sm text-gray-100 max-w-md">
         We know how large objects will act, We know how are objects will act

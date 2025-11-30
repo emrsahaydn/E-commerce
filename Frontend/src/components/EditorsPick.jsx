@@ -21,7 +21,7 @@ function EditorsPick() {
   <div className="mt-4 md:mt-8 flex flex-col md:flex-row justify-center gap-4">
     
     {/* MEN */}
-    <div className="relative w-full h-[350px] md:w-[510px] md:h-[500px]">
+    <div className="relative w-full h-[500px] md:w-[510px] md:h-[500px]">
       <img src={img1} className="w-full h-full object-cover" alt="Men" />
       <div className="absolute left-6 bottom-6 bg-white px-6 py-2 text-xs md:text-sm font-semibold tracking-widest">
         MEN
@@ -29,7 +29,7 @@ function EditorsPick() {
     </div>
 
     {/* WOMEN */}
-    <div className="relative w-full h-[350px] md:w-[240px] md:h-[500px]">
+    <div className="relative w-full h-[500px] md:w-[240px] md:h-[500px]">
       <img src={img2} className="w-full h-full object-cover" alt="Women" />
       <div className="absolute left-6 bottom-6 bg-white px-6 py-2 text-xs md:text-sm font-semibold tracking-widest">
         WOMEN
