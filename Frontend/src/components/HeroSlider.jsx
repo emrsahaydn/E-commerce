@@ -4,8 +4,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import HeroSlider1 from "../assets/HeroSlider1.jpg";
 import { Navigation, Pagination } from "swiper/modules";
+import { useHistory } from "react-router-dom";
 
 function HeroSlider() {
+  const history = useHistory();
   return (
     <div className="w-full h-[753px]">
       <Swiper
@@ -70,6 +72,7 @@ function HeroSlider() {
           font-semibold
           mt-4
         "
+        onClick={() => history.push('/shop')}
       >
         SHOP NOW
       </button>

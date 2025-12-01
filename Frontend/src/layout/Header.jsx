@@ -48,10 +48,10 @@ function Header() {
         <nav className="hidden md:flex gap-6 text-gray-600 text-sm">
           <Link to="/">Home</Link>
           <Link to="/Shop">Shop</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Blog</Link>
-          <Link to="/">Contact</Link>
-          <Link to="/">Pages</Link>
+          <Link to="*">About</Link>
+          <Link to="*">Blog</Link>
+          <Link to="*">Contact</Link>
+          <Link to="*">Pages</Link>
         </nav>
 
         {/* ICONS RIGHT */}
