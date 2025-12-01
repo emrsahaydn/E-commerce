@@ -22,36 +22,35 @@ function SecondHeroSlider() {
   <SwiperSlide>
 
 
-  <div className="hidden md:flex w-full h-[480px] lg:h-[520px] bg-[#23856D] px-12 lg:px-20 py-12 items-center justify-between">
+  {/* SLIDE 1 - Desktop */}
+<div className="hidden md:flex w-full h-[480px] lg:h-[520px] bg-[#23856D] px-12 lg:px-20 py-12 items-center justify-center gap-40">
 
+  <div className="flex flex-col items-start gap-4 text-white max-w-xl">
+    <p className="text-sm tracking-wide">SUMMER 2020</p>
+    <h2 className="text-5xl font-bold leading-tight">
+      Vita Classic <br /> Product 
+    </h2>
+    <p className="text-sm text-gray-100 max-w-md">
+      We know how large objects will act, We know <br /> how are objects will act, We know
+    </p>
 
-    <div className="flex-1 flex flex-col items-start gap-4 text-white max-w-xl">
-      <p className="text-sm tracking-wide">SUMMER 2020</p>
-      <h2 className="text-5xl font-bold leading-tight">
-        Vita Classic <br /> Product 
-      </h2>
-      <p className="text-sm text-gray-100 max-w-md">
-        We know how large objects will act, We know how are objects will act
-      </p>
-
-      <div className="flex items-center gap-4 mt-2">
-        <span className="text-xl font-bold">$18.99</span>
-        <button className="bg-[#2DC071] px-8 py-3 rounded-md text-sm font-semibold">
-          ADD TO CART
-        </button>
-      </div>
+    <div className="flex items-center gap-4 mt-2">
+      <span className="text-xl font-bold">$18.99</span>
+      <button className="bg-[#2DC071] px-8 py-3 rounded-md text-sm font-semibold">
+        ADD TO CART
+      </button>
     </div>
-
-    {/* Desktop Image */}
-    <div className="flex-1 flex justify-end">
-      <img
-        src={SliderMan}
-        className="h-[360px] lg:h-[420px] object-contain"
-      />
-    </div>
-
   </div>
-  {/* END DESKTOP */}
+
+  {/* Desktop Image */}
+  <div className="flex-none flex justify-end">
+    <img
+      src={SliderMan}
+      className="h-[360px] lg:h-[420px] object-contain"
+    />
+  </div>
+
+</div>
   
 
 

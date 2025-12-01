@@ -44,7 +44,7 @@ function HeroSlider() {
         items-center md:items-start
         justify-center
         text-center md:text-left
-        px-6 md:px-20
+        px-6 md:px-40
         gap-4
       "
     >
