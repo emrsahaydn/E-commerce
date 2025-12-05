@@ -93,6 +93,7 @@ function Header() {
             </div>
 
             <Link to="*">About</Link>
+            <Link to="/team">Team</Link>
             <Link to="*">Blog</Link>
             <Link to="/contact">Contact</Link>
             <Link to="*">Pages</Link>
@@ -119,6 +120,7 @@ function Header() {
           <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
           <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link>
+          <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
         </div>
       )}
     </header>
