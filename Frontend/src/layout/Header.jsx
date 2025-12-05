@@ -91,7 +91,7 @@ function Header() {
                 </div>
               )}
             </div>
-
+              
             <Link to="*">About</Link>
             <Link to="/team">Team</Link>
             <Link to="/contact">Contact</Link>

@@ -1,6 +1,6 @@
-import t1 from "../assets/teampage/t1.jpg";
-import t2 from "../assets/teampage/t2.jpg";
-import t3 from "../assets/teampage/t3.jpg";
+import t1 from "../assets/teamPage/t1.jpg";
+import t2 from "../assets/teamPage/t2.jpg";
+import t3 from "../assets/teamPage/t3.jpg";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 import { Facebook, Instagram, Twitter } from "lucide-react";
