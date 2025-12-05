@@ -94,7 +94,7 @@ function Header() {
 
             <Link to="*">About</Link>
             <Link to="*">Blog</Link>
-            <Link to="*">Contact</Link>
+            <Link to="/contact">Contact</Link>
             <Link to="*">Pages</Link>
           </nav>
         </div>

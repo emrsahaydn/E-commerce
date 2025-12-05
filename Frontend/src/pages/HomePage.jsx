@@ -5,12 +5,16 @@ import SecondHeroSlider from "../components/SecondHeroSlider";
 import NeuralUniverseSection from "../components/NeuralUniverseSection";
 import FeaturedPostsSection from "../components/FeaturedPostsSection";
 import Footer from "../layout/Footer";
+import Header from "../layout/Header";
+
 
 
 function HomePage() {
   return (
     <div className="w-full flex flex-col">
-
+      <div>
+        <Header/>
+      </div>
       
       <section className="w-full">
         <HeroSlider />

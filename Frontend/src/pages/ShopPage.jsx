@@ -3,9 +3,11 @@ import Footer from "../layout/Footer";
 import BrandLogos from "../components/BrandLogos";
 import FilterBar from "../components/FilterBar";
 import ShopHero from "../components/ShopHero";
+import Header from "../layout/Header";
 function ShopPage() {
     return (
         <div>
+            <Header/>
             <ShopHero />
             <FilterBar />
             <ShopProducts />
