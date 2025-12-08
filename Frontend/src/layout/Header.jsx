@@ -119,6 +119,7 @@ function Header() {
           <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
           <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link>
           <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
+          <Link to="/about" onClick={() => setIsMenuOpen(false)}>Team</Link>
         </div>
       )}
     </header>
