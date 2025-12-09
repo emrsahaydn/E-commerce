@@ -14,18 +14,17 @@ import { useState } from "react";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isShopOpen, setIsShopOpen] = useState(false);
 
   return (
     <header className="w-full flex flex-col">
-      {/* Top bar (hidden on mobile) */}
-      <div className="hidden md:flex w-full bg-gray-900 text-white text-sm justify-between items-center px-4 py-2">
+      {/* TOP BAR */}
+      <div className="hidden md:flex w-full bg-[#252B42] text-white text-sm justify-between items-center px-4 py-2">
         <div className="flex items-center gap-4">
           <span>(225) 555-0118</span>
           <span>michelle.rivera@example.com</span>
         </div>
 
-        <div>
+        <div className="text-center">
           Follow Us and get a chance to win 80% off
         </div>
 
@@ -38,90 +37,86 @@ function Header() {
         </div>
       </div>
 
+      {/* MAIN NAVBAR */}
+      <div className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        
+        {/* LOGO */}
+        <h2 className="text-2xl font-bold text-[#252B42] cursor-pointer">
+          <Link to="/">Bandage</Link>
+        </h2>
 
-      <div className="w-full bg-white flex justify-between items-center px-4 py-4 md:px-8">
+        {/* DESKTOP MENU */}
+        <nav className="hidden md:flex items-center gap-8 font-medium text-gray-700">
+          <Link to="/">Home</Link>
+          <Link to="/shop">Shop</Link>
+          <Link to="/about">About</Link>
+          <Link to="/team">Team</Link>
+          <Link to="/contact">Contact</Link>
 
-        <div className="flex items-center gap-20">  
-          {/* LOGO */}
-          <div className="text-2xl font-bold text-gray-800">
-            Bandage
+        </nav>
+
+        {/* RIGHT ICONS + LOGIN/REGISTER */}
+        <div className="flex items-center gap-6">
+
+          {/* LOGIN & REGISTER (DESKTOP) */}
+          <div className="hidden md:flex items-center gap-2 text-[#23A6F0] font-medium">
+
+            <User className="w-4 h-4" />
+
+            <Link to="/login" className="hover:no-underline">
+              Login
+            </Link>
+
+            <span>/</span>
+
+            <Link to="/signup" className="hover:no-underline">
+              Register
+            </Link>
           </div>
 
+          {/* SEARCH ICON */}
+          <Search className="w-5 h-5 text-[#23A6F0] cursor-pointer" />
 
-          <nav className="hidden md:flex gap-6 text-gray-600 text-sm">
-            <Link to="/">Home</Link>
-            <div
-              className="relative"
-              onMouseEnter={() => setIsShopOpen(true)}
-              onMouseLeave={() => setIsShopOpen(false)}
-            >
-              <Link to="/shop" className="flex items-center gap-1">
-                Shop
-                <span className="text-[12px]">▼</span>
-              </Link>
+          {/* CART ICON */}
+          <div className="flex items-center gap-1 text-[#23A6F0] cursor-pointer">
+            <ShoppingCart className="w-5 h-5" />
+            <span className="text-sm font-semibold">1</span>
+          </div>
 
-              {/* MEGA MENU */}
-              {isShopOpen && (
-                <div className="absolute left-0 top-full bg-white shadow-lg p-6 w-[500px] flex gap-16 z-50">
+          {/* WISHLIST ICON */}
+          <div className="flex items-center gap-1 text-[#23A6F0] cursor-pointer">
+            <Heart className="w-5 h-5" />
+            <span className="text-sm font-semibold">1</span>
+          </div>
 
-                  {/* Kadın */}
-                  <div>
-                    <h3 className="font-semibold mb-3 text-[#252B42]">Kadın</h3>
-                    <ul className="flex flex-col gap-2 text-gray-600 text-sm">
-                      <li>Bags</li>
-                      <li>Belts</li>
-                      <li>Cosmetics</li>
-                      <li>Bags</li>
-                      <li>Hats</li>
-                    </ul>
-                  </div>
-
-                  {/* Erkek */}
-                  <div>
-                    <h3 className="font-semibold mb-3 text-[#252B42]">Erkek</h3>
-                    <ul className="flex flex-col gap-2 text-gray-600 text-sm">
-                      <li>Bags</li>
-                      <li>Belts</li>
-                      <li>Cosmetics</li>
-                      <li>Bags</li>
-                      <li>Hats</li>
-                    </ul>
-                  </div>
-
-                </div>
-              )}
-            </div>
-              
-            <Link to="/about">About</Link>
-            <Link to="/team">Team</Link>
-            <Link to="/contact">Contact</Link>
-          </nav>
-        </div>
-
-
-        <div className="flex items-center gap-4 text-gray-800">
-          <User className="w-5 h-5 cursor-pointer" />
-          <Search className="w-5 h-5 cursor-pointer" />
-          <ShoppingCart className="w-5 h-5 cursor-pointer" />
+          {/* MOBILE MENU BUTTON */}
           <Menu
-            className="w-6 h-6 cursor-pointer md:hidden"
+            className="w-6 h-6 md:hidden text-[#252B42] cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           />
         </div>
       </div>
 
-
+      {/* MOBILE DROPDOWN MENU */}
       {isMenuOpen && (
-        <div className="md:hidden w-full bg-white flex flex-col items-center gap-6 py-10 text-lg text-gray-700 shadow-lg border-t">
-          <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/product" onClick={() => setIsMenuOpen(false)}>Product</Link>
-          <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
-          <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-          <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link>
-          <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
-          <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+        <div className="md:hidden flex flex-col items-center gap-4 bg-white shadow px-6 py-4 text-center">
+
+          <Link to="/" className="text-gray-700">Home</Link>
+          <Link to="/shop" className="text-gray-700">Shop</Link>
+          <Link to="/about" className="text-gray-700">About</Link>
+          <Link to="/team" className="text-gray-700">Team</Link>
+          <Link to="/contact" className="text-gray-700">Contact</Link>
+
+          {/* MOBİL LOGIN-REGISTER */}
+          <div className="flex items-center gap-2 text-[#23A6F0] font-medium mt-2">
+            <User className="w-4 h-4" />
+            <Link to="/login" className="hover:no-underline">Login</Link>
+            <span>/</span>
+            <Link to="/signup" className="hover:no-underline">Register</Link>
+          </div>
         </div>
       )}
+
     </header>
   );
 }
