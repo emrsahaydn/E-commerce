@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axiosInstance from "../api/axiosInstance";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../store/thunkActions";
+import { toast } from "react-toastify";
+
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -12,38 +15,30 @@ export default function Login() {
   const [apiError, setApiError] = useState(null);
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
     setLoading(true);
     setApiError(null);
 
     try {
-      const res = await axiosInstance.post("/login", {
-        email: data.email,
-        password: data.password,
-      });
+      await dispatch(
+        loginUser(
+          { email: data.email, password: data.password },
+          data.rememberMe || false
+        )
+      );
 
-      const { token, user } = res.data;
-
-      // TOKEN KAYDET
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // ROLE GÖRE YÖNLENDİRME
-      if (user.role_id === 1) {
-        history.push("/admin");
-      } else if (user.role_id === 2) {
-        history.push("/store");
+      if (history.length > 1) {
+        history.goBack();
       } else {
         history.push("/");
       }
 
     } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        "Login failed. Check your credentials.";
-
-      setApiError(message);
+      const msg = err.message || "Login failed";
+      toast.error(msg);
+      setApiError(msg);
     } finally {
       setLoading(false);
     }
@@ -57,26 +52,27 @@ export default function Login() {
       >
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
 
-        {/* API ERROR */}
         {apiError && (
           <div className="p-2 bg-red-100 text-red-700 rounded text-sm">
             {apiError}
           </div>
         )}
 
-        {/* EMAIL */}
         <div>
           <label>Email</label>
           <input
             className={`border p-2 rounded w-full ${errors.email ? "border-red-500" : ""}`}
             {...register("email", {
               required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email format",
+              },
             })}
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
 
-        {/* PASSWORD */}
         <div>
           <label>Password</label>
           <input
@@ -89,7 +85,18 @@ export default function Login() {
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>
 
-        {/* SUBMIT BUTTON */}
+        <div className="flex items-center gap-2">
+          <input
+            id="rememberMe"
+            type="checkbox"
+            className="w-4 h-4"
+            {...register("rememberMe")}
+          />
+          <label htmlFor="rememberMe" className="text-sm text-gray-700">
+            Remember me
+          </label>
+        </div>
+
         <button
           type="submit"
           disabled={loading}
