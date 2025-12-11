@@ -1,5 +1,6 @@
 import axiosInstance from "../api/axiosInstance";
 import { setRoles, setUser } from "./clientActions";
+import { setCategories } from "./productActions";
 
 // ROLLER İÇİN THUNK
 export const fetchRolesIfNeeded = () => {
@@ -78,6 +79,25 @@ export const verifyToken = () => {
       // token bozuk → sil
       localStorage.removeItem("token");
       delete axiosInstance.defaults.headers.common["Authorization"];
+    }
+  };
+};
+
+export const fetchCategories = () => {
+  return async (dispatch, getState) => {
+    const { product } = getState();
+
+    // Eğer categories zaten yüklüyse tekrar API'ye gitme
+    if (product.categories.length > 0) {
+      console.log("Categories already loaded, skipping fetch.");
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.get("/categories");
+      dispatch(setCategories(response.data));
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
     }
   };
 };

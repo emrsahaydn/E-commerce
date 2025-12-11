@@ -7,33 +7,35 @@ import FeaturedPostsSection from "../components/FeaturedPostsSection";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 
-
-
 function HomePage() {
   return (
     <div className="w-full flex flex-col">
-      <div>
-        <Header/>
-      </div>
-      
+      <Header />
+
       <section className="w-full">
         <HeroSlider />
       </section>
+
       <div className="mt-10 md:mt-50">
         <EditorsPick />
       </div>
+
       <div className="mt-10">
         <BestsellerProducts />
       </div>
+
       <div className="mt-10">
         <SecondHeroSlider />
       </div>
+
       <div className="mt-20">
         <NeuralUniverseSection />
       </div>
+
       <div className="mt-10">
         <FeaturedPostsSection />
       </div>
+
       <div className="mt-20">
         <Footer />
       </div>

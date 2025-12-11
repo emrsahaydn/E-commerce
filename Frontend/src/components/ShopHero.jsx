@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-
-import shophero1 from "../assets/shophero/shophero1.png";
-import shophero2 from "../assets/shophero/shophero2.png";
-import shophero3 from "../assets/shophero/shophero3.png";
-import shophero4 from "../assets/shophero/shophero4.png";
-import shophero5 from "../assets/shophero/shophero5.png";
-
-const heroImages = [shophero1, shophero2, shophero3, shophero4, shophero5];
+import { useSelector } from "react-redux";
 
 function ShopHero() {
+  const categories = useSelector((state) => state.product.categories);
+
+  // İlk 5 kategori (rating'e göre sıralayıp alıyoruz)
+  const topCategories = [...categories]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 5);
+
   return (
     <div className="w-full bg-white py-12">
       <div className="max-w-[1300px] mx-auto px-4">
@@ -26,34 +26,41 @@ function ShopHero() {
           </div>
         </div>
 
-        {/* CATEGORY CARDS */}
+        {/* TOP CATEGORY CARDS */}
         <div className="w-full flex flex-wrap justify-center gap-6">
 
-          {heroImages.map((img, index) => (
-            <div
-              key={index}
-              className="
-                relative 
+          {topCategories.map((cat) => {
+            const genderText = cat.gender === "k" ? "kadin" : "erkek";
+            const categoryName = cat.code.split(":")[1];
 
-                /* 🎯 Mobil boyutlar */
-                w-[332px] h-[300px]
+            return (
+              <Link
+                key={cat.id}
+                to={`/shop/${genderText}/${categoryName}/${cat.id}`}
+                className="
+                  relative 
+                  w-[332px] h-[300px]
+                  md:w-[205px] md:h-[223px]
+                  rounded overflow-hidden shadow-md
+                  hover:scale-105 transition-transform
+                "
+              >
+                <img
+                  src={cat.img}
+                  alt={cat.title}
+                  className="w-full h-full object-cover"
+                />
 
-                /* 🎯 Masaüstü boyutlar */
-                md:w-[205px] md:h-[223px]
-
-                rounded overflow-hidden shadow-md
-              "
-            >
-              {/* IMAGE */}
-              <img
-                src={img}
-                alt="category"
-                className="w-full h-full object-cover"
-              />
-
-              
-            </div>
-          ))}
+                <div className="
+                  absolute bottom-0 left-0 right-0 
+                  bg-black bg-opacity-40 text-white 
+                  p-2 text-center text-lg font-semibold
+                ">
+                  {cat.title}
+                </div>
+              </Link>
+            );
+          })}
 
         </div>
       </div>
