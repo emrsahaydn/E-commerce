@@ -1,73 +1,140 @@
-import shop1 from "../assets/shopimg/shop1.jpg";
-import shop2 from "../assets/shopimg/shop2.jpg";
-import shop3 from "../assets/shopimg/shop3.jpg";
-import shop4 from "../assets/shopimg/shop4.jpg";
-import shop5 from "../assets/shopimg/shop5.jpg";
-import shop6 from "../assets/shopimg/shop6.jpg";
-import shop7 from "../assets/shopimg/shop7.jpg";
-import shop8 from "../assets/shopimg/shop8.jpg";
-import shop9 from "../assets/shopimg/shop9.jpg";
-import shop10 from "../assets/shopimg/shop10.jpg";
-import shop11 from "../assets/shopimg/shop11.jpg";
-import shop12 from "../assets/shopimg/shop12.jpg";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-const products = [
-  shop1, shop2, shop3, shop4,
-  shop5, shop6, shop7, shop8,
-  shop9, shop10, shop11, shop12
-];
+function ShopProducts({ currentPage, setCurrentPage, limit }) {
+  const { productList, fetchState, total } = useSelector((state) => state.product);
 
-function ShopProducts() {
+  const totalPages = Math.ceil(total / limit);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(renderButton(i));
+      }
+      return pages;
+    }
+
+    let startPage, endPage;
+
+    if (currentPage <= 2) {
+      startPage = 1;
+      endPage = 3;
+    } else if (currentPage >= totalPages - 1) {
+      startPage = totalPages - 2;
+      endPage = totalPages;
+    } else {
+      startPage = currentPage - 1;
+      endPage = currentPage + 1;
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(renderButton(i));
+    }
+
+    // "..." ve Son Sayfa Mantığı
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pages.push(
+          <span key="dots" className="px-4 py-2 bg-white text-[#737373] border-r border-[#E8E8E8]">
+            ...
+          </span>
+        );
+      }
+      pages.push(renderButton(totalPages));
+    }
+
+    return pages;
+  };
+
+  const renderButton = (i) => (
+    <button
+      key={i}
+      onClick={() => handlePageChange(i)}
+      className={`px-4 py-2 font-bold border-r border-[#E8E8E8] transition-colors ${
+        currentPage === i 
+        ? "bg-[#23A6F0] text-white" 
+        : "bg-white text-[#23A6F0] hover:bg-gray-50"
+      }`}
+    >
+      {i}
+    </button>
+  );
+
+  if (fetchState === "FETCHING") {
+    return (
+      <div className="w-full flex justify-center items-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#23A6F0]"></div>
+        <p className="ml-3 font-semibold text-[#23A6F0]">Loading Products...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex flex-col items-center py-12">
-
-      {/* PRODUCT LIST */}
-      <div className="w-full max-w-[1300px] flex flex-wrap justify-center gap-10">
-        {products.map((img, index) => (
-          <div key={index} className="flex flex-col items-center">
-
-            {/* IMAGE */}
-            <img
-              src={img}
-              alt="product"
-              className="
-                w-[348px] h-[427px]   /* MOBIL */
-                md:w-[239px] md:h-[300px]  /* MASAÜSTÜ */
-                object-cover mx-auto
-              "
-            />
-
-            {/* TITLE */}
-            <h3 className="text-[15px] font-semibold mt-3">Graphic Design</h3>
-            <p className="text-gray-500 text-sm">English Department</p>
-
-            {/* PRICE */}
-            <div className="flex gap-2 mt-1">
-              <span className="text-gray-500 text-sm">$16.48</span>
-              <span className="text-green-500 font-semibold text-sm">$6.48</span>
+      <div className="w-full max-w-[1300px] flex flex-wrap justify-center gap-10 min-h-[400px]">
+        {productList && productList.length > 0 ? (
+          productList.map((product) => (
+            <div key={product.id} className="flex flex-col items-center group">
+              <Link to={`/product/${product.id}`} className="flex flex-col items-center">
+                <div className="overflow-hidden">
+                  <img
+                    src={product.images[0]?.url}
+                    alt={product.name}
+                    className="w-[348px] h-[427px] md:w-[239px] md:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <h3 className="text-[15px] font-bold mt-3 text-[#252B42] uppercase hover:text-[#23A6F0] transition-colors text-center px-2">
+                  {product.name}
+                </h3>
+              </Link>
+              
+              <p className="text-[#737373] text-sm font-bold truncate max-w-[200px] text-center">{product.description}</p>
+              <div className="flex gap-2 mt-2 font-bold">
+                <span className="text-[#BDBDBD] text-sm">{(product.price * 1.2).toFixed(2)} ₺</span>
+                <span className="text-[#23856D] text-sm">{product.price} ₺</span>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <span className="w-4 h-4 bg-[#23A6F0] rounded-full"></span>
+                <span className="w-4 h-4 bg-[#23856D] rounded-full"></span>
+                <span className="w-4 h-4 bg-[#E77C40] rounded-full"></span>
+                <span className="w-4 h-4 bg-[#252B42] rounded-full"></span>
+              </div>
             </div>
-
-            {/* COLORS */}
-            <div className="flex gap-2 mt-3">
-              <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-              <span className="w-3 h-3 bg-green-600 rounded-full"></span>
-              <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-              <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-            </div>
-
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-center py-10 text-gray-500 font-bold">No products found in this category.</div>
+        )}
       </div>
 
-      {/* PAGINATION */}
-      <div className="flex items-center gap-3 mt-12">
-        <button className="border px-4 py-2 text-gray-600 rounded">First</button>
-        <button className="border px-4 py-2 rounded">1</button>
-        <button className="border px-4 py-2 bg-blue-500 text-white rounded">2</button>
-        <button className="border px-4 py-2 rounded">3</button>
-        <button className="border px-4 py-2 text-gray-600 rounded">Next</button>
-      </div>
+      {/* SAYFALAMA BUTONLARI */}
+      {totalPages > 1 && (
+        <div className="flex items-center gap-0 mt-12 border rounded-md overflow-hidden shadow-sm border-[#E8E8E8]">
+          <button
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-white text-[#23A6F0] font-bold border-r hover:bg-[#23A6F0] hover:text-white disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+          >
+            First
+          </button>
+          
+          {renderPageNumbers()}
 
+          <button
+            onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-white text-[#23A6F0] font-bold hover:bg-[#23A6F0] hover:text-white disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

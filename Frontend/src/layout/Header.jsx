@@ -21,28 +21,35 @@ function Header() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // LOGIN OLAN USER
+
   const user = useSelector((state) => state.client.user);
 
-  // CATEGORIES REDUX’TAN
+
   const categories = useSelector((state) => state.product.categories);
 
-  // HEADER MOUNT OLDUĞUNDA CATEGORIES ÇEK
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
 
-  // KADIN / ERKEK AYIR
+  useEffect(() => {
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, categories.length]);
+
+
   const womenCategories = categories.filter((c) => c.gender === "k");
   const menCategories = categories.filter((c) => c.gender === "e");
 
-  // URL OLUŞTURMA YARDIMCI FONKSİYON
+ 
   const buildCategoryLink = (cat) => {
+
     const genderSegment = cat.gender === "k" ? "kadin" : "erkek";
-    // "k:tisort" → "tisort"
-    const slugFromCode = cat.code?.split(":")[1] || "";
-    const categorySegment =
-      slugFromCode || cat.title.toLowerCase().replace(/\s+/g, "-");
+    
+
+    const categorySegment = cat.title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]/g, "-") 
+      .replace(/-+/g, "-")       
+      .replace(/^-|-$/g, "");    
 
     return `/shop/${genderSegment}/${categorySegment}/${cat.id}`;
   };
@@ -62,124 +69,124 @@ function Header() {
           <span>(225) 555-0118</span>
           <span>michelle.rivera@example.com</span>
         </div>
-
-        <div className="text-center">
+        <div className="text-center font-bold">
           Follow Us and get a chance to win 80% off
         </div>
-
         <div className="flex items-center gap-3">
           <span>Follow Us :</span>
-          <Instagram className="w-4 h-4 cursor-pointer" />
-          <Youtube className="w-4 h-4 cursor-pointer" />
-          <Facebook className="w-4 h-4 cursor-pointer" />
-          <Twitter className="w-4 h-4 cursor-pointer" />
+          <Instagram className="w-4 h-4 cursor-pointer hover:text-[#23A6F0]" />
+          <Youtube className="w-4 h-4 cursor-pointer hover:text-[#23A6F0]" />
+          <Facebook className="w-4 h-4 cursor-pointer hover:text-[#23A6F0]" />
+          <Twitter className="w-4 h-4 cursor-pointer hover:text-[#23A6F0]" />
         </div>
       </div>
 
       {/* MAIN NAVBAR */}
-      <div className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 relative">
+      <div className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
         <h2 className="text-2xl font-bold text-[#252B42] cursor-pointer">
           <Link to="/">Bandage</Link>
         </h2>
 
         {/* NAVIGATION */}
-        <nav className="hidden md:flex items-center gap-8 font-medium text-gray-700 relative">
-          <Link to="/">Home</Link>
+        <nav className="hidden md:flex items-center gap-8 font-bold text-[#737373] relative">
+          <Link to="/" className="hover:text-[#252B42]">Home</Link>
 
           {/* SHOP DROPDOWN WRAPPER */}
           <div className="relative group">
-            {/* SHOP LINK (tıklayınca /shop'a gider) */}
-            <Link to="/shop" className="flex items-center gap-1 cursor-pointer">
-              Shop <span className="text-sm">▼</span>
+            <Link to="/shop" className="flex items-center gap-1 cursor-pointer hover:text-[#252B42]">
+              Shop <span className="text-[10px]">▼</span>
             </Link>
 
             {/* DROPDOWN CONTENT */}
             <div
               className="
-                absolute left-0 top-full mt-3 
-                bg-white shadow-lg rounded-md p-6 
+                absolute left-[-50px] top-full mt-2 
+                bg-white shadow-xl rounded-lg p-6 
                 opacity-0 invisible 
                 group-hover:opacity-100 group-hover:visible
-                transition-all duration-200 
-                w-[360px]   /* biraz küçülttük */
-                flex gap-10 /* kadın / erkek birbirine yakın */
-                z-50
+                transition-all duration-300 
+                w-[350px] 
+                flex justify-between
+                z-50 border border-gray-100
               "
             >
-              {/* Kadın */}
-              <div className="flex flex-col gap-2 min-w-[140px]">
-                <h4 className="font-semibold text-[#252B42] mb-1">Kadın</h4>
-                {womenCategories.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    to={buildCategoryLink(cat)}
-                    className="text-sm text-gray-700 hover:text-[#23A6F0]"
-                  >
-                    {cat.title}
-                  </Link>
-                ))}
-                {womenCategories.length === 0 && (
+              {/* Kadın Bölümü */}
+              <div className="flex flex-col gap-3 min-w-[130px]">
+                <h4 className="font-bold text-[#252B42] border-b pb-1 mb-1">Kadın</h4>
+                {womenCategories.length > 0 ? (
+                  womenCategories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={buildCategoryLink(cat)}
+                      className="text-sm font-medium text-[#737373] hover:text-[#23A6F0] hover:translate-x-1 transition-transform"
+                    >
+                      {cat.title}
+                    </Link>
+                  ))
+                ) : (
                   <span className="text-xs text-gray-400">Yükleniyor...</span>
                 )}
               </div>
 
-              {/* Erkek */}
-              <div className="flex flex-col gap-2 min-w-[140px]">
-                <h4 className="font-semibold text-[#252B42] mb-1">Erkek</h4>
-                {menCategories.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    to={buildCategoryLink(cat)}
-                    className="text-sm text-gray-700 hover:text-[#23A6F0]"
-                  >
-                    {cat.title}
-                  </Link>
-                ))}
-                {menCategories.length === 0 && (
+              {/* Erkek Bölümü */}
+              <div className="flex flex-col gap-3 min-w-[130px]">
+                <h4 className="font-bold text-[#252B42] border-b pb-1 mb-1">Erkek</h4>
+                {menCategories.length > 0 ? (
+                  menCategories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={buildCategoryLink(cat)}
+                      className="text-sm font-medium text-[#737373] hover:text-[#23A6F0] hover:translate-x-1 transition-transform"
+                    >
+                      {cat.title}
+                    </Link>
+                  ))
+                ) : (
                   <span className="text-xs text-gray-400">Yükleniyor...</span>
                 )}
               </div>
             </div>
           </div>
 
-          <Link to="/about">About</Link>
-          <Link to="/team">Team</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/product">Product</Link>
+          <Link to="/about" className="hover:text-[#252B42]">About</Link>
+          <Link to="/team" className="hover:text-[#252B42]">Team</Link>
+          <Link to="/contact" className="hover:text-[#252B42]">Contact</Link>
         </nav>
 
         {/* RIGHT ICONS */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-5">
           {!user ? (
-            <div className="hidden md:flex items-center gap-2 text-[#23A6F0] font-medium">
+            <div className="hidden md:flex items-center gap-1 text-[#23A6F0] font-bold">
               <User className="w-4 h-4" />
-              <Link to="/login">Login</Link>
+              <Link to="/login" className="hover:underline">Login</Link>
               <span>/</span>
-              <Link to="/signup">Register</Link>
+              <Link to="/signup" className="hover:underline">Register</Link>
             </div>
           ) : (
-            <div className="hidden md:flex items-center gap-3 text-[#23A6F0] font-medium">
-              <Gravatar email={user.email} className="rounded-full w-6 h-6" />
-              <span>{user.name}</span>
+            <div className="hidden md:flex items-center gap-3 text-[#23A6F0] font-bold">
+              <div className="flex items-center gap-2">
+                <Gravatar email={user.email} className="rounded-full w-6 h-6 shadow-sm" />
+                <span className="text-[#252B42]">{user.name}</span>
+              </div>
               <button
                 onClick={handleLogout}
-                className="text-red-600 font-medium hover:underline"
+                className="text-red-500 hover:text-red-700 text-sm border border-red-200 px-2 py-1 rounded"
               >
                 Logout
               </button>
             </div>
           )}
 
-          <Search className="w-5 h-5 text-[#23A6F0] cursor-pointer" />
-
-          <div className="flex items-center gap-1 text-[#23A6F0] cursor-pointer">
-            <ShoppingCart className="w-5 h-5" />
-            <span className="text-sm font-semibold">1</span>
-          </div>
-
-          <div className="flex items-center gap-1 text-[#23A6F0] cursor-pointer">
-            <Heart className="w-5 h-5" />
-            <span className="text-sm font-semibold">1</span>
+          <div className="flex items-center gap-4 text-[#23A6F0]">
+            <Search className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform" />
+            <div className="flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+              <ShoppingCart className="w-5 h-5" />
+              <span className="text-xs font-bold">1</span>
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+              <Heart className="w-5 h-5" />
+              <span className="text-xs font-bold">1</span>
+            </div>
           </div>
 
           <Menu
@@ -191,30 +198,26 @@ function Header() {
 
       {/* MOBILE MENU */}
       {isMenuOpen && (
-        <div className="md:hidden flex flex-col items-center gap-4 bg-white shadow px-6 py-4 text-center z-50">
-          <Link to="/">Home</Link>
-          <Link to="/shop">Shop</Link>
-          <Link to="/about">About</Link>
-          <Link to="/team">Team</Link>
-          <Link to="/contact">Contact</Link>
+        <div className="md:hidden flex flex-col items-center gap-6 bg-white border-b px-6 py-8 text-center text-[#737373] text-xl font-medium animate-in fade-in slide-in-from-top-4 duration-300">
+          <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+          <Link to="/shop" onClick={() => setIsMenuOpen(false)}>Shop</Link>
+          <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+          <Link to="/team" onClick={() => setIsMenuOpen(false)}>Team</Link>
+          <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
 
           {!user ? (
-            <div className="flex items-center gap-2 text-[#23A6F0] font-medium mt-2">
-              <User className="w-4 h-4" />
-              <Link to="/login">Login</Link>
-              <span>/</span>
-              <Link to="/signup">Register</Link>
+            <div className="flex flex-col items-center gap-4 text-[#23A6F0] font-bold mt-2">
+              <User className="w-6 h-6 inline-block" />
+              <Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link>
+              <Link to="/signup" className="bg-[#23A6F0] text-white px-8 py-3 rounded-md w-full" onClick={() => setIsMenuOpen(false)}>Register</Link>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-2 text-[#23A6F0]">
-              <Gravatar email={user.email} className="rounded-full w-8 h-8" />
-              <span>{user.name}</span>
-              <button
-                onClick={handleLogout}
-                className="text-red-600 font-medium"
-              >
-                Logout
-              </button>
+            <div className="flex flex-col items-center gap-4">
+               <div className="flex items-center gap-2">
+                <Gravatar email={user.email} className="rounded-full w-10 h-10" />
+                <span className="text-[#252B42]">{user.name}</span>
+              </div>
+              <button onClick={handleLogout} className="text-red-500 font-bold border-b border-red-100 w-full pb-2">Logout</button>
             </div>
           )}
         </div>

@@ -13,13 +13,14 @@ function PageContent() {
     <main className="w-full">
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/shop" component={ShopPage}/>
-        <Route path="/product" component={ProductDetailPage} />
-        <Route path="/contact" component={ContactPage} />
-        <Route path="/team" component={TeamPage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/signup" component={SignupPage} />
-        <Route path="/login" component={LoginPage} />
+        <Route exact path="/shop/:gender/:categoryName/:categoryId" component={ShopPage} />
+        <Route exact path="/shop" component={ShopPage}/>
+        <Route exact path="/product/:productId" component={ProductDetailPage} />
+        <Route exact path="/contact" component={ContactPage} />
+        <Route exact path="/team" component={TeamPage} />
+        <Route exact path="/about" component={AboutPage} />
+        <Route exact path="/signup" component={SignupPage} />
+        <Route exact path="/login" component={LoginPage} />
       </Switch>
     </main>
   );

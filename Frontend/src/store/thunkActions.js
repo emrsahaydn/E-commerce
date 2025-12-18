@@ -1,6 +1,6 @@
 import axiosInstance from "../api/axiosInstance";
 import { setRoles, setUser } from "./clientActions";
-import { setCategories } from "./productActions";
+import { setCategories, setProductList, setTotal, setFetchState } from "./productActions";
 
 // ROLLER İÇİN THUNK
 export const fetchRolesIfNeeded = () => {
@@ -87,7 +87,6 @@ export const fetchCategories = () => {
   return async (dispatch, getState) => {
     const { product } = getState();
 
-    // Eğer categories zaten yüklüyse tekrar API'ye gitme
     if (product.categories.length > 0) {
       console.log("Categories already loaded, skipping fetch.");
       return;
@@ -98,6 +97,48 @@ export const fetchCategories = () => {
       dispatch(setCategories(response.data));
     } catch (err) {
       console.error("Failed to fetch categories:", err);
+    }
+  };
+};
+
+
+
+
+
+export const fetchProducts = (
+  categoryId = null,
+  filter = "",
+  sort = "",
+  gender = null,
+  limit = 25, 
+  offset = 0  
+) => {
+  return async (dispatch) => {
+    dispatch(setFetchState("FETCHING"));
+    try {
+      const params = new URLSearchParams();
+
+      if (categoryId) params.append("category", categoryId);
+      if (filter) params.append("filter", filter);
+      if (sort) params.append("sort", sort);
+      if (gender) params.append("gender", gender);
+
+      params.append("limit", limit);
+      params.append("offset", offset);
+
+      const queryString = params.toString();
+      const url = `/products?${queryString}`;
+
+      console.log("Sayfalama ile atılan istek:", url); 
+
+      const response = await axiosInstance.get(url);
+      
+      dispatch(setProductList(response.data.products));
+      dispatch(setTotal(response.data.total));
+      dispatch(setFetchState("FETCHED"));
+    } catch (error) {
+      console.error("Fetch products error:", error);
+      dispatch(setFetchState("FAILED"));
     }
   };
 };
