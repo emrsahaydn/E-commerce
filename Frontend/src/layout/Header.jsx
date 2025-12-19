@@ -9,24 +9,28 @@ import {
   Heart,
   Menu,
   User,
+  Trash2,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Gravatar from "react-gravatar";
 import { setUser } from "../store/clientActions";
 import { fetchCategories } from "../store/thunkActions";
+import { removeFromCart, updateCartItem } from "../store/cartActions";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
 
-
   const user = useSelector((state) => state.client.user);
-
-
   const categories = useSelector((state) => state.product.categories);
+  
+  // SEPET VERİSİNİ ÇEKİYORUZ
+  const cart = useSelector((state) => state.shoppingCart.cart);
 
+  // Sepetteki toplam ürün sayısını hesapla
+  const totalItemCount = cart.reduce((total, item) => total + item.count, 0);
 
   useEffect(() => {
     if (categories.length === 0) {
@@ -34,16 +38,11 @@ function Header() {
     }
   }, [dispatch, categories.length]);
 
-
   const womenCategories = categories.filter((c) => c.gender === "k");
   const menCategories = categories.filter((c) => c.gender === "e");
 
- 
   const buildCategoryLink = (cat) => {
-
     const genderSegment = cat.gender === "k" ? "kadin" : "erkek";
-    
-
     const categorySegment = cat.title
       .toLowerCase()
       .trim()
@@ -179,10 +178,54 @@ function Header() {
 
           <div className="flex items-center gap-4 text-[#23A6F0]">
             <Search className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform" />
-            <div className="flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-              <ShoppingCart className="w-5 h-5" />
-              <span className="text-xs font-bold">1</span>
+            
+            {/* SEPET DROPDOWN WRAPPER */}
+            <div className="relative group">
+              <div className="flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
+                <ShoppingCart className="w-5 h-5" />
+                <span className="text-xs font-bold">{totalItemCount}</span>
+              </div>
+
+              {/* SEPET DROPDOWN CONTENT */}
+              <div className="absolute right-0 top-full mt-2 bg-white shadow-2xl rounded-lg p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[300px] z-50 border border-gray-100">
+                <h4 className="font-bold text-[#252B42] border-b pb-2 mb-3">My Cart ({totalItemCount} Items)</h4>
+                
+                <div className="max-h-[300px] overflow-y-auto">
+                  {cart.length > 0 ? (
+                    cart.map((item) => (
+                      <div key={item.product.id} className="flex gap-3 mb-4 border-b pb-2 last:border-0">
+                        <img src={item.product.images[0]?.url} alt="" className="w-12 h-16 object-cover rounded" />
+                        <div className="flex-1">
+                          <p className="text-sm font-bold text-[#252B42] line-clamp-1">{item.product.name}</p>
+                          <p className="text-xs text-[#737373]">Count: {item.count}</p>
+                          <p className="text-sm font-bold text-[#23856D]">{item.product.price} ₺</p>
+                        </div>
+                        <button 
+                          onClick={() => dispatch(removeFromCart(item.product.id))}
+                          className="text-red-400 hover:text-red-600 self-center"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center py-4 text-gray-400 text-sm italic">Your cart is empty</p>
+                  )}
+                </div>
+
+                {cart.length > 0 && (
+                  <div className="mt-3 pt-3 border-t flex flex-col gap-2">
+                    <Link to="/cart" className="bg-[#23A6F0] text-white text-center py-2 rounded-md font-bold text-sm hover:bg-[#1a85c2] transition-colors">
+                      Go to Cart
+                    </Link>
+                    <button className="bg-[#252B42] text-white py-2 rounded-md font-bold text-sm hover:bg-[#1a1e2e] transition-colors">
+                      Checkout
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+
             <div className="flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
               <Heart className="w-5 h-5" />
               <span className="text-xs font-bold">1</span>

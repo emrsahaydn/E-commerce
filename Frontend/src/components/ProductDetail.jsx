@@ -3,6 +3,7 @@ import { Link, useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"; 
 import { ChevronLeft, ChevronRight, Heart, ShoppingCart, Eye, ArrowLeft } from "lucide-react";
 import { fetchProductDetail } from "../store/thunkActions"; 
+import { addToCart } from "../store/cartActions";
 
 function ProductDetail() {
   const { productId } = useParams(); 
@@ -15,6 +16,12 @@ function ProductDetail() {
   useEffect(() => {
     dispatch(fetchProductDetail(productId));
   }, [dispatch, productId]);
+
+  const handleAddToCart = () => {
+    if (activeProduct) {
+      dispatch(addToCart(activeProduct));
+    }
+  };
 
   if (fetchState === "FETCHING") {
     return (
@@ -136,14 +143,20 @@ function ProductDetail() {
           </div>
 
           <div className="flex items-center gap-4 mt-8">
-            <button className="bg-blue-500 text-white px-8 py-3 rounded-md font-bold hover:bg-blue-600 transition-all transform active:scale-95 shadow-md">
+            <button 
+              onClick={handleAddToCart}
+              className="bg-blue-500 text-white px-8 py-3 rounded-md font-bold hover:bg-blue-600 transition-all transform active:scale-95 shadow-md"
+            >
               Add to Cart
             </button>
             <div className="flex gap-2">
               <button className="p-3 border rounded-full hover:bg-gray-100 transition-colors bg-white">
                 <Heart size={18} />
               </button>
-              <button className="p-3 border rounded-full hover:bg-gray-100 transition-colors bg-white">
+              <button 
+                onClick={handleAddToCart}
+                className="p-3 border rounded-full hover:bg-gray-100 transition-colors bg-white"
+              >
                 <ShoppingCart size={18} />
               </button>
               <button className="p-3 border rounded-full hover:bg-gray-100 transition-colors bg-white">

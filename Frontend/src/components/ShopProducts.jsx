@@ -1,14 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { addToCart } from "../store/cartActions";
 
 function ShopProducts({ currentPage, setCurrentPage, limit }) {
+  const dispatch = useDispatch();
   const { productList, fetchState, total, categories } = useSelector((state) => state.product);
   const { gender } = useParams();
 
   const totalPages = Math.ceil(total / limit);
 
-  // Ürün ismini URL dostu (slug) formatına çeviren fonksiyon
   const createSlug = (name) => {
     return name
       .toLowerCase()
@@ -18,7 +19,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
       .replace(/^-+|-+$/g, '');
   };
 
-  // Kategori ismini bulmak için yardımcı fonksiyon
   const getCategoryName = (categoryId) => {
     const category = categories.find(cat => cat.id === categoryId);
     return category ? createSlug(category.title) : "category";
@@ -27,6 +27,10 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 300, behavior: "smooth" });
+  };
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
   };
 
   const renderPageNumbers = () => {
@@ -95,7 +99,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
       <div className="w-full max-w-[1300px] flex flex-wrap justify-center gap-10 min-h-[400px]">
         {productList && productList.length > 0 ? (
           productList.map((product) => {
-            // Dinamik URL parametrelerini oluşturuyoruz
             const productSlug = createSlug(product.name);
             const categoryName = getCategoryName(product.category_id);
             const productGender = gender || (product.category_id <= 8 ? "kadin" : "erkek");
@@ -126,11 +129,20 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
                   <span className="text-[#BDBDBD] text-sm">{(product.price * 1.2).toFixed(2)} ₺</span>
                   <span className="text-[#23856D] text-sm">{product.price} ₺</span>
                 </div>
-                <div className="flex gap-2 mt-3">
+                <div className="flex gap-2 mt-3 items-center">
                   <span className="w-4 h-4 bg-[#23A6F0] rounded-full"></span>
                   <span className="w-4 h-4 bg-[#23856D] rounded-full"></span>
                   <span className="w-4 h-4 bg-[#E77C40] rounded-full"></span>
                   <span className="w-4 h-4 bg-[#252B42] rounded-full"></span>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddToCart(product);
+                    }}
+                    className="ml-4 bg-[#23A6F0] text-white text-xs px-2 py-1 rounded hover:bg-[#1a85c2] transition-colors"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             );
