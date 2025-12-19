@@ -7,13 +7,18 @@ import {
   UPDATE_CART_ITEM 
 } from "./cartActionTypes";
 
+const savedCart = localStorage.getItem("cart");
+const initialCart = savedCart ? JSON.parse(savedCart) : [];
+
 const initialState = {
-  cart: [], 
+  cart: initialCart, 
   payment: {},
   address: {},
 };
 
 export default function shoppingCartReducer(state = initialState, action) {
+  let newState;
+
   switch (action.type) {
     case ADD_TO_CART: {
       const existingItemIndex = state.cart.findIndex(
@@ -26,23 +31,28 @@ export default function shoppingCartReducer(state = initialState, action) {
             ? { ...item, count: item.count + 1 }
             : item
         );
-        return { ...state, cart: updatedCart };
+        newState = { ...state, cart: updatedCart };
+      } else {
+        newState = {
+          ...state,
+          cart: [...state.cart, { count: 1, checked: true, product: action.payload }],
+        };
       }
-
-      return {
-        ...state,
-        cart: [...state.cart, { count: 1, checked: true, product: action.payload }],
-      };
+      localStorage.setItem("cart", JSON.stringify(newState.cart));
+      return newState;
     }
 
-    case REMOVE_FROM_CART:
-      return {
+    case REMOVE_FROM_CART: {
+      newState = {
         ...state,
         cart: state.cart.filter((item) => item.product.id !== action.payload),
       };
+      localStorage.setItem("cart", JSON.stringify(newState.cart));
+      return newState;
+    }
 
-    case UPDATE_CART_ITEM:
-      return {
+    case UPDATE_CART_ITEM: {
+      newState = {
         ...state,
         cart: state.cart.map((item) =>
           item.product.id === action.payload.productId
@@ -50,9 +60,15 @@ export default function shoppingCartReducer(state = initialState, action) {
             : item
         ),
       };
+      localStorage.setItem("cart", JSON.stringify(newState.cart));
+      return newState;
+    }
 
-    case SET_CART:
-      return { ...state, cart: action.payload };
+    case SET_CART: {
+      newState = { ...state, cart: action.payload };
+      localStorage.setItem("cart", JSON.stringify(newState.cart));
+      return newState;
+    }
 
     case SET_PAYMENT:
       return { ...state, payment: action.payload };

@@ -6,8 +6,36 @@ import { addToCart } from "../store/cartActions";
 function ShopProducts({ currentPage, setCurrentPage, limit }) {
   const dispatch = useDispatch();
   const { productList, fetchState, total, categories } = useSelector((state) => state.product);
-  const { gender } = useParams();
+  const { gender } = useParams(); 
+  
+  const filteredProducts = productList.filter((product) => {
+    if (!gender) return true; 
 
+    const title = product.name.toLowerCase();
+    const description = product.description.toLowerCase();
+    
+   
+    if (gender === "kadin") {
+      return (
+        title.includes("kadın") || 
+        description.includes("kadın") || 
+        title.includes("unisex") ||
+        product.category_id === 4 
+      );
+    } 
+    
+    if (gender === "erkek") {
+      return (
+        title.includes("erkek") || 
+        description.includes("erkek") || 
+        title.includes("unisex")
+      );
+    }
+    
+    return true;
+  });
+
+  
   const totalPages = Math.ceil(total / limit);
 
   const createSlug = (name) => {
@@ -97,11 +125,11 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
   return (
     <div className="w-full flex flex-col items-center py-12">
       <div className="w-full max-w-[1300px] flex flex-wrap justify-center gap-10 min-h-[400px]">
-        {productList && productList.length > 0 ? (
-          productList.map((product) => {
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => {
             const productSlug = createSlug(product.name);
             const categoryName = getCategoryName(product.category_id);
-            const productGender = gender || (product.category_id <= 8 ? "kadin" : "erkek");
+            const productGender = gender || (product.category_id === 4 ? "kadin" : "erkek");
             
             return (
               <div 
@@ -148,7 +176,10 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
             );
           })
         ) : (
-          <div className="text-center py-10 text-gray-500 font-bold">No products found in this category.</div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <h3 className="text-[#737373] font-bold text-xl mb-2">No items here!</h3>
+            <p className="text-[#737373] italic">There are no products in this category for the selected gender.</p>
+          </div>
         )}
       </div>
 

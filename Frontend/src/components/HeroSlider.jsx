@@ -24,7 +24,6 @@ function HeroSlider() {
         <SwiperSlide>
   <div className="relative w-full h-[753px] overflow-hidden">
 
-    {/* BACKGROUND IMAGE — Mobile crop 414px */}
     <img
   src={HeroSlider1}
   alt="Hero Slide"
@@ -83,14 +82,14 @@ function HeroSlider() {
 
         {/* SLIDE 2 */}
         <SwiperSlide>
-          <div className="w-full h-[753px] flex items-center justify-center bg-green-500 text-white text-2xl">
+          <div className="w-full h-[753px] flex items-center justify-center bg-[#52B5D8] text-white text-2xl">
             Slide 2
           </div>
         </SwiperSlide>
 
         {/* SLIDE 3 */}
         <SwiperSlide>
-          <div className="w-full h-[753px] flex items-center justify-center bg-purple-500 text-white text-2xl">
+          <div className="w-full h-[753px] flex items-center justify-center bg-[#52B5D8] text-white text-2xl">
             Slide 3
           </div>
         </SwiperSlide>

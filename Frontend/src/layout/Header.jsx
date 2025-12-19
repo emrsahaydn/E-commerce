@@ -26,10 +26,8 @@ function Header() {
   const user = useSelector((state) => state.client.user);
   const categories = useSelector((state) => state.product.categories);
   
-  // SEPET VERİSİNİ ÇEKİYORUZ
   const cart = useSelector((state) => state.shoppingCart.cart);
 
-  // Sepetteki toplam ürün sayısını hesapla
   const totalItemCount = cart.reduce((total, item) => total + item.count, 0);
 
   useEffect(() => {
@@ -41,8 +39,16 @@ function Header() {
   const womenCategories = categories.filter((c) => c.gender === "k");
   const menCategories = categories.filter((c) => c.gender === "e");
 
+  const categoryIdMap = {
+    "Tişört": 1,
+    "Ayakkabı": 2,
+    "Ceket": 3,
+    "Elbise": 4,
+  };
+
   const buildCategoryLink = (cat) => {
     const genderSegment = cat.gender === "k" ? "kadin" : "erkek";
+    
     const categorySegment = cat.title
       .toLowerCase()
       .trim()
@@ -50,7 +56,9 @@ function Header() {
       .replace(/-+/g, "-")       
       .replace(/^-|-$/g, "");    
 
-    return `/shop/${genderSegment}/${categorySegment}/${cat.id}`;
+    const targetId = categoryIdMap[cat.title] || cat.id;
+
+    return `/shop/${genderSegment}/${categorySegment}/${targetId}`;
   };
 
   const handleLogout = () => {
@@ -115,7 +123,7 @@ function Header() {
                 {womenCategories.length > 0 ? (
                   womenCategories.map((cat) => (
                     <Link
-                      key={cat.id}
+                      key={`k-${cat.id}`}
                       to={buildCategoryLink(cat)}
                       className="text-sm font-medium text-[#737373] hover:text-[#23A6F0] hover:translate-x-1 transition-transform"
                     >
@@ -133,7 +141,7 @@ function Header() {
                 {menCategories.length > 0 ? (
                   menCategories.map((cat) => (
                     <Link
-                      key={cat.id}
+                      key={`e-${cat.id}`}
                       to={buildCategoryLink(cat)}
                       className="text-sm font-medium text-[#737373] hover:text-[#23A6F0] hover:translate-x-1 transition-transform"
                     >
