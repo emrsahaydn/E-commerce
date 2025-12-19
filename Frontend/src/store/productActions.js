@@ -6,6 +6,7 @@ import {
   SET_LIMIT,
   SET_OFFSET,
   SET_FILTER,
+  SET_ACTIVE_PRODUCT,
 } from "./productActionTypes";
 
 // Categories
@@ -48,4 +49,9 @@ export const setOffset = (offset) => ({
 export const setFilter = (filter) => ({
   type: SET_FILTER,
   payload: filter,
+});
+
+export const setActiveProduct = (product) => ({
+  type: SET_ACTIVE_PRODUCT,
+  payload: product,
 });

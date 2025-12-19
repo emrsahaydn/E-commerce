@@ -1,10 +1,28 @@
+import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function ShopProducts({ currentPage, setCurrentPage, limit }) {
-  const { productList, fetchState, total } = useSelector((state) => state.product);
+  const { productList, fetchState, total, categories } = useSelector((state) => state.product);
+  const { gender } = useParams();
 
   const totalPages = Math.ceil(total / limit);
+
+  // Ürün ismini URL dostu (slug) formatına çeviren fonksiyon
+  const createSlug = (name) => {
+    return name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  // Kategori ismini bulmak için yardımcı fonksiyon
+  const getCategoryName = (categoryId) => {
+    const category = categories.find(cat => cat.id === categoryId);
+    return category ? createSlug(category.title) : "category";
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -13,7 +31,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
 
   const renderPageNumbers = () => {
     const pages = [];
-    
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(renderButton(i));
@@ -22,7 +39,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
     }
 
     let startPage, endPage;
-
     if (currentPage <= 2) {
       startPage = 1;
       endPage = 3;
@@ -38,7 +54,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
       pages.push(renderButton(i));
     }
 
-    // "..." ve Son Sayfa Mantığı
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         pages.push(
@@ -49,7 +64,6 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
       }
       pages.push(renderButton(totalPages));
     }
-
     return pages;
   };
 
@@ -80,40 +94,52 @@ function ShopProducts({ currentPage, setCurrentPage, limit }) {
     <div className="w-full flex flex-col items-center py-12">
       <div className="w-full max-w-[1300px] flex flex-wrap justify-center gap-10 min-h-[400px]">
         {productList && productList.length > 0 ? (
-          productList.map((product) => (
-            <div key={product.id} className="flex flex-col items-center group">
-              <Link to={`/product/${product.id}`} className="flex flex-col items-center">
-                <div className="overflow-hidden">
-                  <img
-                    src={product.images[0]?.url}
-                    alt={product.name}
-                    className="w-[348px] h-[427px] md:w-[239px] md:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+          productList.map((product) => {
+            // Dinamik URL parametrelerini oluşturuyoruz
+            const productSlug = createSlug(product.name);
+            const categoryName = getCategoryName(product.category_id);
+            const productGender = gender || (product.category_id <= 8 ? "kadin" : "erkek");
+            
+            return (
+              <div 
+                key={product.id} 
+                className="flex flex-col items-center group cursor-pointer hover:shadow-lg transition-all duration-300 p-2 rounded-lg"
+              >
+                <Link 
+                  to={`/shop/${productGender}/${categoryName}/${product.category_id}/${productSlug}/${product.id}`} 
+                  className="flex flex-col items-center"
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      src={product.images[0]?.url}
+                      alt={product.name}
+                      className="w-[348px] h-[427px] md:w-[239px] md:h-[300px] object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <h3 className="text-[15px] font-bold mt-3 text-[#252B42] uppercase hover:text-[#23A6F0] transition-colors text-center px-2">
+                    {product.name}
+                  </h3>
+                </Link>
+                
+                <p className="text-[#737373] text-sm font-bold truncate max-w-[200px] text-center">{product.description}</p>
+                <div className="flex gap-2 mt-2 font-bold">
+                  <span className="text-[#BDBDBD] text-sm">{(product.price * 1.2).toFixed(2)} ₺</span>
+                  <span className="text-[#23856D] text-sm">{product.price} ₺</span>
                 </div>
-                <h3 className="text-[15px] font-bold mt-3 text-[#252B42] uppercase hover:text-[#23A6F0] transition-colors text-center px-2">
-                  {product.name}
-                </h3>
-              </Link>
-              
-              <p className="text-[#737373] text-sm font-bold truncate max-w-[200px] text-center">{product.description}</p>
-              <div className="flex gap-2 mt-2 font-bold">
-                <span className="text-[#BDBDBD] text-sm">{(product.price * 1.2).toFixed(2)} ₺</span>
-                <span className="text-[#23856D] text-sm">{product.price} ₺</span>
+                <div className="flex gap-2 mt-3">
+                  <span className="w-4 h-4 bg-[#23A6F0] rounded-full"></span>
+                  <span className="w-4 h-4 bg-[#23856D] rounded-full"></span>
+                  <span className="w-4 h-4 bg-[#E77C40] rounded-full"></span>
+                  <span className="w-4 h-4 bg-[#252B42] rounded-full"></span>
+                </div>
               </div>
-              <div className="flex gap-2 mt-3">
-                <span className="w-4 h-4 bg-[#23A6F0] rounded-full"></span>
-                <span className="w-4 h-4 bg-[#23856D] rounded-full"></span>
-                <span className="w-4 h-4 bg-[#E77C40] rounded-full"></span>
-                <span className="w-4 h-4 bg-[#252B42] rounded-full"></span>
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <div className="text-center py-10 text-gray-500 font-bold">No products found in this category.</div>
         )}
       </div>
 
-      {/* SAYFALAMA BUTONLARI */}
       {totalPages > 1 && (
         <div className="flex items-center gap-0 mt-12 border rounded-md overflow-hidden shadow-sm border-[#E8E8E8]">
           <button

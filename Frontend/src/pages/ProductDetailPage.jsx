@@ -4,16 +4,23 @@ import BestsellerProducts from "../components/BestsellerProducts";
 import ProductDetail from "../components/ProductDetail";
 import ProductDetailTabs from "../components/ProductDetailTabs";
 import Header from "../layout/Header";
-export default function ProductDetailPage() {
-    return (
+import { useEffect } from "react";
 
-        <div>
+export default function ProductDetailPage() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    return (
+        <div className="min-h-screen bg-gray-50">
             <Header/>
-            <ProductDetail />
-            <ProductDetailTabs />
-            <BestsellerProducts />
-            <BrandLogos />
+            <main className="container mx-auto">
+                <ProductDetail />
+                <ProductDetailTabs />
+                <BestsellerProducts />
+                <BrandLogos />
+            </main>
             <Footer />
         </div>
-    )
+    );
 }

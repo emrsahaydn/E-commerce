@@ -1,6 +1,6 @@
 import axiosInstance from "../api/axiosInstance";
 import { setRoles, setUser } from "./clientActions";
-import { setCategories, setProductList, setTotal, setFetchState } from "./productActions";
+import { setCategories, setProductList, setTotal, setFetchState,setActiveProduct } from "./productActions";
 
 // ROLLER İÇİN THUNK
 export const fetchRolesIfNeeded = () => {
@@ -143,4 +143,20 @@ export const fetchProducts = (
   };
 };
 
+
+export const fetchProductDetail = (productId) => {
+  return async (dispatch) => {
+    dispatch(setFetchState("FETCHING"));
+    try {
+      const response = await axiosInstance.get(`/products/${productId}`);
+      
+      dispatch(setActiveProduct(response.data));
+      
+      dispatch(setFetchState("FETCHED"));
+    } catch (error) {
+      console.error("Failed to fetch product detail:", error);
+      dispatch(setFetchState("FAILED"));
+    }
+  };
+};
 

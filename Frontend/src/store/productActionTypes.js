@@ -6,3 +6,4 @@ export const SET_FETCH_STATE = "SET_FETCH_STATE";
 export const SET_LIMIT = "SET_LIMIT";
 export const SET_OFFSET = "SET_OFFSET";
 export const SET_FILTER = "SET_FILTER";
+export const SET_ACTIVE_PRODUCT = "SET_ACTIVE_PRODUCT";
